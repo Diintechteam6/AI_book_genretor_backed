@@ -15,15 +15,12 @@ const app = express();
     if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 });
 
-// Robust CORS configuration
+// Robust CORS configuration (handles all origins, methods, and preflight requests)
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
 }));
-
-// Handle preflight requests for all routes
-app.options('*', cors());
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
