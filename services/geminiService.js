@@ -25,11 +25,17 @@ Your task:
 4. For each chapter, identify headings, subheadings, and organize into readable sections.
 5. Create a clean Table of Contents.
 6. Provide a concise 1-2 sentence summary for each chapter.
+7. Generate professional publishing metadata (a catchy subtitle, a realistic publisher name, current year, realistic ISBN, and edition) based on the book's context if not explicitly provided in the text.
 
 CRITICAL REQUIREMENT: Return ONLY a valid JSON object matching this exact schema:
 {
   "title": "${bookDetails.title}",
+  "subtitle": "Generated catchy subtitle",
   "author": "${bookDetails.author}",
+  "publisher": "Generated or Extracted Publisher Name",
+  "publishedYear": "2026",
+  "isbn": "978-X-XX-XXXXXX-X",
+  "edition": "First Edition",
   "language": "${bookDetails.language || 'English'}",
   "tableOfContents": [
     { "chapter": 1, "title": "Chapter Title Here" }
@@ -148,7 +154,12 @@ const localFallbackParser = (rawContent, bookDetails) => {
     if (!text) {
         return {
             title,
+            subtitle: 'A Comprehensive Guide',
             author,
+            publisher: 'Antigravity Press',
+            publishedYear: new Date().getFullYear().toString(),
+            isbn: `978-1-${Math.floor(Math.random() * 900000) + 100000}-${Math.floor(Math.random() * 90) + 10}-0`,
+            edition: 'First Edition',
             language,
             tableOfContents: [{ chapter: 1, title: 'Introduction' }],
             chapters: [{
@@ -210,7 +221,12 @@ const localFallbackParser = (rawContent, bookDetails) => {
 
     return {
         title,
+        subtitle: 'A Comprehensive Exploration',
         author,
+        publisher: 'Antigravity Press',
+        publishedYear: new Date().getFullYear().toString(),
+        isbn: `978-1-${Math.floor(Math.random() * 900000) + 100000}-${Math.floor(Math.random() * 90) + 10}-0`,
+        edition: 'First Edition',
         language,
         tableOfContents,
         chapters

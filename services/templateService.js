@@ -65,6 +65,32 @@ const renderCover = (book, defaultCoverHTML) => {
     return defaultCoverHTML;
 };
 
+const renderTitleAndCopyrightPage = (book) => `
+    <div class="title-copyright-page" style="page-break-after: always; break-after: page; display: flex; flex-direction: column; min-height: 240mm; box-sizing: border-box; padding-top: 15%;">
+        
+        <!-- TITLE SECTION -->
+        <div style="text-align: center;">
+            <h1 style="font-size: 3em; margin-bottom: 10px; font-weight: bold;">${escapeHtml(book.title)}</h1>
+            ${book.subtitle ? `<h2 style="font-size: 1.5em; font-weight: 300; margin-bottom: 30px; opacity: 0.8;">${escapeHtml(book.subtitle)}</h2>` : ''}
+            <h3 style="font-size: 1.2em; font-weight: bold; margin-top: 20px;">${escapeHtml(book.author)}</h3>
+        </div>
+
+        <div style="flex-grow: 1;"></div>
+
+        <!-- COPYRIGHT SECTION -->
+        <div style="font-size: 0.8em; line-height: 1.5; padding-top: 40px; margin-top: auto;">
+            <p><strong>Copyright &copy; ${escapeHtml(book.publishedYear || new Date().getFullYear().toString())} by ${escapeHtml(book.author)}</strong></p>
+            <p style="margin: 10px 0 15px 0; max-width: 600px; text-align: justify; opacity: 0.85;">${escapeHtml(book.copyrightText || 'All rights reserved. No part of this publication may be reproduced, distributed, or transmitted in any form or by any means, including photocopying, recording, or other electronic or mechanical methods, without the prior written permission of the publisher, except in the case of brief quotations embodied in critical reviews and certain other noncommercial uses permitted by copyright law.')}</p>
+            <div style="border-top: 1px solid rgba(128,128,128,0.3); padding-top: 15px; margin-bottom: 15px; max-width: 600px;">
+                <p style="margin-bottom: 5px;"><strong>Publisher:</strong> ${escapeHtml(book.publisher || 'Independent Publisher')}</p>
+                <p style="margin-bottom: 5px;"><strong>Edition:</strong> ${escapeHtml(book.edition || 'First Edition')}</p>
+                <p style="margin-bottom: 5px;"><strong>ISBN:</strong> ${escapeHtml(book.isbn || '978-X-XX-XXXXXX-X')}</p>
+            </div>
+            <p style="opacity: 0.7;">Printed in the United States of America.</p>
+        </div>
+    </div>
+`;
+
 const richContentCSS = `
   .section { margin-bottom: 18px; }
   .section-heading { break-after: avoid; page-break-after: avoid; }
@@ -133,6 +159,7 @@ const modernTemplate = (book, customCSS) => `<!DOCTYPE html>
     <div class="author">By ${book.author}</div>
   </div>
   `)}
+  ${renderTitleAndCopyrightPage(book)}
   ${renderTOC(book.tableOfContents || [])}
   ${renderChapters(book.chapters || [], book.docSpacing)}
 </body></html>`;
@@ -183,6 +210,7 @@ const classicTemplate = (book) => `<!DOCTYPE html>
     <div class="divider">✦ ✦ ✦</div>
   </div>
   `)}
+  ${renderTitleAndCopyrightPage(book)}
   ${renderTOC(book.tableOfContents || [])}
   ${renderChapters(book.chapters || [], book.docSpacing)}
 </body></html>`;
@@ -231,6 +259,7 @@ const educationTemplate = (book) => `<!DOCTYPE html>
     <div class="author">✍️ ${book.author}</div>
   </div>
   `)}
+  ${renderTitleAndCopyrightPage(book)}
   ${renderTOC(book.tableOfContents || [])}
   ${renderChapters(book.chapters || [], book.docSpacing)}
 </body></html>`;
@@ -279,6 +308,7 @@ const minimalTemplate = (book) => `<!DOCTYPE html>
     <div class="author">${book.author}</div>
   </div>
   `)}
+  ${renderTitleAndCopyrightPage(book)}
   ${renderTOC(book.tableOfContents || [])}
   ${renderChapters(book.chapters || [], book.docSpacing)}
 </body></html>`;
@@ -330,6 +360,8 @@ const technicalTemplate = (book) => `<!DOCTYPE html>
     <div class="version">@language: ${book.language || 'English'}</div>
   </div>
   `)}
+  ${renderTitlePage(book)}
+  ${renderCopyrightPage(book)}
   ${renderTOC(book.tableOfContents || [])}
   ${renderChapters(book.chapters || [], book.docSpacing)}
 </body></html>`;
