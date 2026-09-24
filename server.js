@@ -4,9 +4,13 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const connectDB = require('./config/db');
+const seedAdmin = require('./seedAdmin');
 
 // Connect to Database (Gemini AI Book Engine)
-connectDB();
+connectDB().then(() => {
+    // Run seed script to ensure admin exists
+    seedAdmin();
+});
 
 const app = express();
 
